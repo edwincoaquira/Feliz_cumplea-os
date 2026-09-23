@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Regalo para Danita <3</title>
+  <!-- Agrega la hoja de estilo de Bootstrap -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <style>
+    .regalo {
+      cursor: pointer;
+      animation: flotar 2s ease-in-out infinite;
+    }
+
+    @keyframes flotar {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes latido {
+      0% { opacity: 0.7; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+      100% { opacity: 0.7; transform: scale(1); }
+    }
+
+    #mensajeInicio {
+      animation: latido 1.5s infinite;
+      font-size: 1.1rem;
+    }
+
+    .card {
+      border-radius: 20px !important;
+      border: none !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+      background: #ffffff;
+    }
+    /* Estilo para las burbujas del cursor */
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(173, 216, 230, 0.5) 70%, rgba(0, 119, 182, 0.3));
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      pointer-events: none;
+      animation: bubble-anim 1s ease-out forwards;
+      z-index: 9999;
+      box-shadow: inset 0 0 5px rgba(255, 255, 255, 0.8), 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    @keyframes bubble-anim {
+      0% {
+        transform: scale(0.4) translateY(0);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1.1) translateY(-50px);
+        opacity: 0;
+      }
+    }
+
+</style>
+</head>
+<body style="background-color: #bcc7cb;">
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6 offset-md-3 text-center">
+         <!-- Div para el regalo -->
+        <div class="regalo" onclick="playAudio()">
+            <!-- Imagen del regalo cerrado -->
+            <img src="regalocerrado.png" alt="Regalo cerrado" class="img-fluid" width="200" id="regalo">
+             <!-- Imagen del regalo abierto -->
+             <img src="regaloabierto.png" alt="Regalo cerrado" class="img-fluid" width="200" id="regaloAb" style="display: none;">
+        </div>
+
+        <!-- NUEVO: Mensaje en la parte inferior del regalo -->
+        <div id="mensajeInicio" class="mt-2 text-danger font-weight-bold">
+            ¡Abra la caja!
+        </div>
+
+        <!-- Elemento de audio oculto -->
+        <audio id="audio" controls style="display: none">
+            <source src="felizcumple.mp3" type="audio/mp3">
+        </audio>
+        <!-- Div para el contenido del regalo -->
+        <div class="card mt-3 mb-3" id="contenido" style="display: none;">
+            <div class="card-body">
+                <h5 class="card-title">¡Feliz cumpleaños!</h5>
+                <p class="card-text">¡Feliz cumpleaños! Carlos Aarón  Espero que pases un día increíble rodeado de la gente que te quiere. Te deseo un año lleno de salud, éxitos y mucha felicidad. siempre se ese  niño alegre que te caracteriza nunca cambies. Te quiere mucho tu tío Edwin ¡Un abrazo fuerte!</p>
+                <img src="flork.png" class="img-fluid" width="200">
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<!-- Agrega los scripts de Bootstrap y jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Agrega tu propio script JS -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.1/dist/confetti.browser.min.js"></script>
+<!-- Reemplaza tu antigua función onClick por esta: -->
+<script>
+    function onClick() {
+        var duration = 2.5 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+        function randomInRange(min, max) {
+          return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+          var timeLeft = animationEnd - Date.now();
+
+          if (timeLeft <= 0) {
+            return clearInterval(interval);
+          }
+
+          var particleCount = 100 * (timeLeft / duration);
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+          confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+        }, 250);
+
+        // Efecto de burbujas de todo tamaño siguiendo el cursor
+    document.addEventListener("mousemove", function(e) {
+        if (Math.random() < 0.25) { // Frecuencia de aparición
+            let bubble = document.createElement("div");
+            bubble.className = "bubble";
+            
+            // Tamaño aleatorio entre 10px y 32px
+            let size = Math.floor(Math.random() * 22) + 10;
+            bubble.style.width = size + "px";
+            bubble.style.height = size + "px";
+            
+            // Posicionar según el cursor centrando la burbuja
+            bubble.style.left = (e.pageX - size / 2) + "px";
+            bubble.style.top = (e.pageY - size / 2) + "px";
+            
+            document.body.appendChild(bubble);
+
+            // Eliminar la burbuja al terminar la animación
+            setTimeout(() => {
+                bubble.remove();
+            }, 1000);
+        }
+    });
+    };
+</script>
+<script>
+    function playAudio() {
+        // Obtén el elemento de audio
+        var audio = document.getElementById("audio");
+        // Reproduce el audio
+        audio.play();
+        $("#contenido").toggle();
+        onClick();
+        $("#regalo").toggle();
+        $("#regaloAb").toggle();
+
+        // NUEVO: Oculta el mensaje cuando se abre el regalo
+        $("#mensajeInicio").hide();
+    }
+  </script>
+</body>
+</html>
